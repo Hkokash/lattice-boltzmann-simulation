@@ -1,41 +1,13 @@
-# LatticeBoltzmannDemo.py:  a two-dimensional lattice-Boltzmann "wind tunnel" simulation
-# Uses numpy to speed up all array handling.
-# Uses matplotlib to plot and animate the curl of the macroscopic velocity field.
+from flask import Flask, render_template, Response
+import numpy as np
+import matplotlib.pyplot as plt
+import io
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import time
+import matplotlib.animation
+import os
 
-# Copyright 2013, Daniel V. Schroeder (Weber State University) 2013
-
-# Permission is hereby granted, free of charge, to any person obtaining a copy of 
-# this software and associated data and documentation (the "Software"), to deal in 
-# the Software without restriction, including without limitation the rights to 
-# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies 
-# of the Software, and to permit persons to whom the Software is furnished to do 
-# so, subject to the following conditions:
-
-# The above copyright notice and this permission notice shall be included in all 
-# copies or substantial portions of the Software.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
-# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR 
-# ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
-# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
-# OTHER DEALINGS IN THE SOFTWARE.
-
-# Except as contained in this notice, the name of the author shall not be used in 
-# advertising or otherwise to promote the sale, use or other dealings in this 
-# Software without prior written authorization.
-
-# Credits:
-# The "wind tunnel" entry/exit conditions are inspired by Graham Pullan's code
-# (http://www.many-core.group.cam.ac.uk/projects/LBdemo.shtml).  Additional inspiration from 
-# Thomas Pohl's applet (http://thomas-pohl.info/work/lba.html).  Other portions of code are based 
-# on Wagner (http://www.ndsu.edu/physics/people/faculty/wagner/lattice_boltzmann_codes/) and
-# Gonsalves (http://www.physics.buffalo.edu/phy411-506-2004/index.html; code adapted from Succi,
-# http://global.oup.com/academic/product/the-lattice-boltzmann-equation-9780199679249).
-
-# For related materials see http://physics.weber.edu/schroeder/fluids
-
-import numpy, time, matplotlib.pyplot, matplotlib.animation
+app = Flask(__name__)
 
 # Define constants:
 height = 80							# lattice dimensions
@@ -160,3 +132,7 @@ def nextFrame(arg):							# (arg is the frame number, which we don't need)
 
 animate = matplotlib.animation.FuncAnimation(theFig, nextFrame, interval=1, blit=True)
 matplotlib.pyplot.show()
+
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
